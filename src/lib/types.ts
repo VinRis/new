@@ -1,0 +1,40 @@
+export type LivestockCategory = 'dairy' | 'poultry' | 'pigs' | 'goats-sheep';
+
+export type Kpi = {
+  label: string;
+  value: string | number;
+  unit?: string;
+  change?: number;
+};
+
+export type Transaction = {
+  id: string;
+  date: string;
+  category: 'Income' | 'Expense';
+  item: string;
+  amount: number;
+};
+
+export type HealthRecord = {
+  id: string;
+  date: string;
+  animalId: string;
+  event: 'Vaccination' | 'Deworming' | 'Treatment' | 'Check-up';
+  notes: string;
+  nextDueDate?: string;
+};
+
+export type ProductionRecord = {
+  id: string;
+  date: string;
+  quantity: number;
+  unit: 'liters' | 'eggs' | 'kg';
+};
+
+export type HistoryRecord = {
+    id: string;
+    date: string;
+    type: 'Production' | 'Financial' | 'Health';
+    description: string;
+    details: string;
+};

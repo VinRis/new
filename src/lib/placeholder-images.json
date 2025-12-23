@@ -1,3 +1,28 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "dairy-cow",
+      "description": "A dairy cow in a green pasture under a blue sky.",
+      "imageUrl": "https://images.unsplash.com/photo-1636998980792-63f27ddea4e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkYWlyeSUyMGNvd3xlbnwwfHx8fDE3NjY0ODgzNzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "dairy cow"
+    },
+    {
+      "id": "poultry-chickens",
+      "description": "A flock of free-range chickens in a farmyard.",
+      "imageUrl": "https://images.unsplash.com/photo-1667897129448-2b80d5d6499b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaGlja2VucyUyMGZhcm18ZW58MHx8fHwxNzY2NDg4MzcxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "chickens farm"
+    },
+    {
+      "id": "pigs-farm",
+      "description": "A group of pigs in a clean, spacious pen.",
+      "imageUrl": "https://images.unsplash.com/photo-1624342670760-af96aa6d0bd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwaWdzJTIwZmFybXxlbnwwfHx8fDE3NjY0ODgzNzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pigs farm"
+    },
+    {
+      "id": "goats-sheep",
+      "description": "A mixed herd of goats and sheep grazing on a hillside.",
+      "imageUrl": "https://images.unsplash.com/photo-1691430305450-4731ec0065de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxnb2F0cyUyMHNoZWVwfGVufDB8fHx8MTc2NjQ4ODM3Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "goats sheep"
+    }
+  ]
 }
