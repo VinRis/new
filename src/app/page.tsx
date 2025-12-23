@@ -1,3 +1,6 @@
+
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -5,6 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CowIcon, ChickenIcon, PigIcon, GoatIcon } from '@/components/icons';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { FileText, Trophy, Cloud, LifeBuoy } from 'lucide-react';
+import { mockTransactions, livestockDisplayNames } from '@/lib/data';
+import type { LivestockCategory } from '@/lib/types';
+import { useMemo } from 'react';
 
 type Livestock = {
   name: string;
@@ -21,12 +27,39 @@ const livestockTypes: Livestock[] = [
 ];
 
 export default function WelcomePage() {
+
+  const topPerformer = useMemo(() => {
+    const revenueByCategory = mockTransactions
+      .filter(tx => tx.category === 'Income')
+      .reduce((acc, tx) => {
+        if (tx.livestockCategory !== 'general') {
+          acc[tx.livestockCategory] = (acc[tx.livestockCategory] || 0) + tx.amount;
+        }
+        return acc;
+      }, {} as Record<LivestockCategory, number>);
+
+    const topCategory = Object.entries(revenueByCategory).sort((a, b) => b[1] - a[1])[0];
+
+    if (!topCategory) {
+      return {
+        name: 'N/A',
+        reason: 'No income data available.'
+      }
+    }
+
+    return {
+      name: livestockDisplayNames[topCategory[0]],
+      reason: 'Highest revenue generation this quarter.'
+    }
+
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="p-4 border-b">
          <div className="container mx-auto flex items-center justify-between">
              <h1 className="font-headline text-2xl font-bold text-primary">
-                FarmSync
+                Farm Manager Pro
             </h1>
             <div className="flex items-center gap-2">
                 <Button variant="ghost">
@@ -45,7 +78,7 @@ export default function WelcomePage() {
             Farm Management, Simplified
           </h1>
           <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">
-            Welcome to FarmSync. Select a livestock category to get a detailed overview of your farm's performance.
+            Welcome to Farm Manager Pro. Select a livestock category to get a detailed overview of your farm's performance.
           </p>
         </div>
 
@@ -93,8 +126,8 @@ export default function WelcomePage() {
                     <Trophy className="h-8 w-8" />
                     <div>
                       <p className="text-sm text-muted-foreground">Top Performer</p>
-                      <h4 className="font-bold text-lg text-foreground">Poultry</h4>
-                      <p className="text-sm text-muted-foreground">Highest revenue generation this quarter.</p>
+                      <h4 className="font-bold text-lg text-foreground">{topPerformer.name}</h4>
+                      <p className="text-sm text-muted-foreground">{topPerformer.reason}</p>
                     </div>
                   </div>
               </div>
@@ -106,7 +139,7 @@ export default function WelcomePage() {
 
       <footer className="p-4 border-t bg-muted/50">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-           &copy; {new Date().getFullYear()} FarmSync. All Rights Reserved.
+           &copy; {new Date().getFullYear()} Farm Manager Pro. All Rights Reserved.
         </div>
       </footer>
     </div>

@@ -4,7 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'FarmSync',
+  title: 'Farm Manager Pro',
   description: 'Modern farm management for livestock farmers.',
 };
 
