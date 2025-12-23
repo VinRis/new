@@ -45,18 +45,6 @@ export default function DashboardPage() {
   const params = useParams() as { livestock: LivestockCategory };
   const { farmName, managerName } = useFarm();
   const [isInsightModalOpen, setInsightModalOpen] = useState(false);
-  const [greeting, setGreeting] = useState('');
-
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) {
-      setGreeting('Good Morning');
-    } else if (hour < 18) {
-      setGreeting('Good Afternoon');
-    } else {
-      setGreeting('Good Evening');
-    }
-  }, []);
 
   const currentKpis = kpis[params.livestock] || [];
   const productionData = monthlyProduction[params.livestock] || [];
@@ -95,7 +83,7 @@ export default function DashboardPage() {
     <>
       <div className="container mx-auto p-4 sm:p-6">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold font-headline text-foreground">{greeting}, {managerName}</h1>
+          <h1 className="text-3xl font-bold font-headline text-foreground">Welcome back, {managerName}</h1>
           <div className="flex items-center justify-between text-muted-foreground">
             <p>Here's what's happening on the farm today.</p>
           </div>
@@ -274,3 +262,5 @@ export default function DashboardPage() {
     </>
   );
 }
+
+    
