@@ -53,49 +53,46 @@ export default function FinancePage() {
         <p className="text-muted-foreground">Track your farm's income and expenses.</p>
       </div>
 
-      <div className="grid gap-6 mb-8">
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline text-muted-foreground flex items-center gap-2">
-              <Wallet className="h-6 w-6"/>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <Card className="lg:col-span-1 bg-card/80 backdrop-blur-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Total Income
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+              +{currency}{income.toFixed(2)}
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="lg:col-span-1 bg-card/80 backdrop-blur-sm">
+           <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <TrendingDown className="h-4 w-4" />
+              Total Expense
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-destructive">
+              -{currency}{expense.toFixed(2)}
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="lg:col-span-1 bg-primary text-primary-foreground">
+           <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Wallet className="h-4 w-4" />
               Net Profit
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className={cn(
-              "text-4xl font-bold font-headline",
-              netProfit >= 0 ? "text-green-600 dark:text-green-400" : "text-destructive"
-            )}>{netProfit >= 0 ? '+' : ''}{currency}{netProfit.toFixed(2)}</p>
+            <p className={cn("text-2xl font-bold")}>
+                {netProfit >= 0 ? '+' : ''}{currency}{netProfit.toFixed(2)}
+            </p>
           </CardContent>
         </Card>
-        <div className="grid md:grid-cols-2 gap-6">
-            <Card>
-                 <CardHeader>
-                    <CardTitle className="font-headline text-muted-foreground flex items-center gap-2">
-                        <TrendingUp className="h-6 w-6"/>
-                        Total Income
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-3xl font-bold font-headline text-green-600 dark:text-green-400">
-                        +{currency}{income.toFixed(2)}
-                    </p>
-                </CardContent>
-            </Card>
-             <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline text-muted-foreground flex items-center gap-2">
-                        <TrendingDown className="h-6 w-6"/>
-                        Total Expense
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-3xl font-bold font-headline text-destructive">
-                        -{currency}{expense.toFixed(2)}
-                    </p>
-                </CardContent>
-            </Card>
-        </div>
       </div>
 
       <Card>
