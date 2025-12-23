@@ -53,6 +53,6 @@ export const mockHistory: HistoryRecord[] = [
     { id: '1', date: '2023-10-26', type: 'Financial', description: 'Cattle Feed Purchase', details: '$500.00 Expense' },
     { id: '2', date: '2023-10-25', type: 'Financial', description: 'Milk Sale', details: '$1200.00 Income' },
     { id: '3', date: '2023-10-24', type: 'Health', description: 'Vet Visit for Cow-012', details: 'Vaccination for BVD' },
-    { id: plumage: '4', date: '2023-10-23', type: 'Production', description: 'Daily Milk Collection', details: '150 Liters' },
+    { id: '4', date: '2023-10-23', type: 'Production', description: 'Daily Milk Collection', details: '150 Liters' },
     { id: '5', date: '2023-10-22', type: 'Financial', description: 'Sale of a Calf', details: '$300.00 Income' },
 ];
