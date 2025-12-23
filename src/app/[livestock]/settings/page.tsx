@@ -25,16 +25,19 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setIsClient(true);
-    const theme = localStorage.getItem('theme');
-    const isDarkMode = theme === 'dark';
+    const isDarkMode = document.documentElement.classList.contains('dark');
     setIsDark(isDarkMode);
-    document.documentElement.classList.toggle('dark', isDarkMode);
   }, []);
-
+  
   const toggleDarkMode = (checked: boolean) => {
     setIsDark(checked);
-    localStorage.setItem('theme', checked ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', checked);
+    if (checked) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   };
   
   if (!isClient) {
