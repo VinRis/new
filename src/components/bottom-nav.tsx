@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, BarChart2, DollarSign, HeartPulse, FileText } from 'lucide-react';
+import { Home, BarChart2, DollarSign, HeartPulse, FileText, PawPrint } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ComponentType } from 'react';
+import type { LivestockCategory } from '@/lib/types';
 
 type NavItemProps = {
   href: string;
@@ -26,10 +27,12 @@ const NavItem = ({ href, label, icon: Icon, livestock }: NavItemProps) => {
   );
 };
 
-export function BottomNav({ livestock }: { livestock: string }) {
+export function BottomNav({ livestock }: { livestock: LivestockCategory }) {
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
-    { href: '/history', label: 'History', icon: BarChart2 },
+    ...(livestock === 'dairy' || livestock === 'pigs'
+      ? [{ href: '/herd', label: 'Herd', icon: PawPrint }]
+      : [{ href: '/history', label: 'History', icon: BarChart2 }]),
     { href: '/finance', label: 'Finance', icon: DollarSign },
     { href: '/health', label: 'Health', icon: HeartPulse },
     { href: '/reports', label: 'Reports', icon: FileText },

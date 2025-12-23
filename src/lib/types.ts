@@ -56,3 +56,14 @@ export type Insight = {
     description: string;
     icon: 'TrendingDown' | 'Syringe' | 'CheckCircle';
 };
+
+export type AnimalHealthStatus = 'Healthy' | 'Monitoring' | 'Sick';
+
+export type Animal = {
+  id: string;
+  tag: string;
+  livestockCategory: LivestockCategory;
+  healthStatus: AnimalHealthStatus;
+  avgYield: number;
+  lastWeight: number;
+};

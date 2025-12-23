@@ -1,4 +1,4 @@
-import type { Kpi, Transaction, HealthRecord, HistoryRecord, MonthlyProduction, LivestockCategory, Insight } from './types';
+import type { Kpi, Transaction, HealthRecord, HistoryRecord, MonthlyProduction, LivestockCategory, Insight, Animal } from './types';
 
 export const livestockDisplayNames: Record<string, string> = {
   'dairy': 'Dairy',
@@ -118,4 +118,14 @@ export const mockHistory: HistoryRecord[] = [
     { id: 'h6', date: new Date(Date.now() - 186400000).toISOString(), type: 'Financial', description: 'Feed Purchase', details: 'Bulk Grain Order', value: '$1,250', livestockCategory: 'dairy' },
     { id: 'h7', date: new Date(Date.now() - 186400000).toISOString(), type: 'Inventory', description: 'Added Corn Silage', details: '500kg to Silo 2', value: '+500 kg', livestockCategory: 'dairy' },
 
+];
+
+export const mockAnimals: Animal[] = [
+  { id: 'cow-01', tag: 'Cow-001', livestockCategory: 'dairy', healthStatus: 'Healthy', avgYield: 25, lastWeight: 650 },
+  { id: 'cow-02', tag: 'Cow-002', livestockCategory: 'dairy', healthStatus: 'Healthy', avgYield: 28, lastWeight: 680 },
+  { id: 'cow-03', tag: 'Cow-003', livestockCategory: 'dairy', healthStatus: 'Monitoring', avgYield: 22, lastWeight: 630 },
+  { id: 'cow-04', tag: 'Cow-004', livestockCategory: 'dairy', healthStatus: 'Sick', avgYield: 15, lastWeight: 600 },
+  { id: 'pig-01', tag: 'Pig-001', livestockCategory: 'pigs', healthStatus: 'Healthy', avgYield: 0.9, lastWeight: 110 },
+  { id: 'pig-02', tag: 'Pig-002', livestockCategory: 'pigs', healthStatus: 'Healthy', avgYield: 0.85, lastWeight: 105 },
+  { id: 'pig-03', tag: 'Pig-003', livestockCategory: 'pigs', healthStatus: 'Monitoring', avgYield: 0.7, lastWeight: 95 },
 ];

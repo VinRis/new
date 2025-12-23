@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { kpis, monthlyProduction, getInsight, mockHealthRecords } from '@/lib/data';
+import { kpis, monthlyProduction, getInsight, mockHealthRecords, mockAnimals } from '@/lib/data';
 import type { LivestockCategory } from '@/lib/types';
 import { ArrowUp, ArrowDown, PawPrint, Droplet, HeartPulse, TrendingDown, Syringe, CheckCircle, Sun, Activity, AlertTriangle, ChevronRight, CalendarClock, Bell, ArrowRight } from 'lucide-react';
 import { FarmInsights } from '@/components/farm-insights';
@@ -47,11 +47,22 @@ export default function DashboardPage({ params }: { params: { livestock: Livesto
 
   const showChart = params.livestock === 'dairy' || params.livestock === 'poultry';
 
-  const herdHealth = {
-    healthy: 142,
-    monitoring: 2,
-    sick: 1,
-  };
+  const herdHealth = useMemo(() => {
+    const healthCounts = {
+      Healthy: 0,
+      Monitoring: 0,
+      Sick: 0,
+    };
+    mockAnimals.filter(a => a.livestockCategory === params.livestock).forEach(animal => {
+        healthCounts[animal.healthStatus]++;
+    });
+    return {
+        healthy: healthCounts.Healthy,
+        monitoring: healthCounts.Monitoring,
+        sick: healthCounts.Sick
+    };
+  }, [params.livestock]);
+
   const totalAnimals = herdHealth.healthy + herdHealth.monitoring + herdHealth.sick;
   
   const upcomingEvent = useMemo(() => {
