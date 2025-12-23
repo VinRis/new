@@ -1,45 +1,44 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { kpis, monthlyProduction, getInsight } from '@/lib/data';
+import { kpis, monthlyProduction, getInsight, mockHealthRecords } from '@/lib/data';
 import type { LivestockCategory } from '@/lib/types';
-import { ArrowUp, ArrowDown, PawPrint, Droplet, HeartPulse, TrendingDown, Syringe, CheckCircle, Sun } from 'lucide-react';
+import { ArrowUp, ArrowDown, PawPrint, Droplet, HeartPulse, TrendingDown, Syringe, CheckCircle, Sun, Activity, AlertTriangle, ChevronRight, CalendarClock, Bell } from 'lucide-react';
 import { FarmInsights } from '@/components/farm-insights';
 import { cn } from '@/lib/utils';
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useMemo } from 'react';
 
 const chartConfig = {
   production: {
     label: "Production",
-    color: "hsl(var(--primary))",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
-const iconMap = {
-  'Daily Yield': Droplet,
-  'Total Herd': PawPrint,
-  'Fertility Rate': HeartPulse,
-  'Somatic Cell Count': Droplet,
-  'Egg Production': Droplet,
-  'Flock Size': PawPrint,
-  'Feed Conversion': TrendingDown,
-  'Avg. Egg Weight': Droplet,
-  'Avg. Weight Gain': TrendingDown,
-  'Pigs per Litter': PawPrint,
-  'Farrowing Rate': HeartPulse,
-  'Milk Yield (Goat)': Droplet,
-  'Wool Yield (Sheep)': PawPrint,
-  'Kidding/Lambing Rate': HeartPulse,
+const iconMap: { [key: string]: { icon: React.ElementType, color: string } } = {
+  'Daily Yield': { icon: Droplet, color: 'text-blue-400' },
+  'Total Herd': { icon: PawPrint, color: 'text-orange-400' },
+  'Conception Rate': { icon: HeartPulse, color: 'text-pink-400' },
+  'Health Incidents': { icon: AlertTriangle, color: 'text-red-400' },
+  'Egg Production': { icon: Droplet, color: 'text-amber-400' },
+  'Flock Size': { icon: PawPrint, color: 'text-orange-400' },
+  'Feed Conversion': { icon: TrendingDown, color: 'text-teal-400' },
+  'Avg. Egg Weight': { icon: Activity, color: 'text-indigo-400' },
+  'Avg. Weight Gain': { icon: TrendingDown, color: 'text-lime-400' },
+  'Pigs per Litter': { icon: PawPrint, color: 'text-orange-400' },
+  'Farrowing Rate': { icon: HeartPulse, color: 'text-pink-400' },
+  'Milk Yield (Goat)': { icon: Droplet, color: 'text-blue-400' },
+  'Wool Yield (Sheep)': { icon: PawPrint, color: 'text-purple-400' },
+  'Kidding/Lambing Rate': { icon: HeartPulse, color: 'text-pink-400' },
 };
 
 
 export default function DashboardPage({ params }: { params: { livestock: LivestockCategory } }) {
   const currentKpis = kpis[params.livestock] || [];
-  const farmName = "Green Acres Farm";
   const userName = "John";
   const productionData = monthlyProduction[params.livestock] || [];
   const insight = getInsight(params.livestock, currentKpis);
@@ -52,6 +51,13 @@ export default function DashboardPage({ params }: { params: { livestock: Livesto
     sick: 1,
   };
   const totalAnimals = herdHealth.healthy + herdHealth.monitoring + herdHealth.sick;
+  
+  const upcomingEvent = useMemo(() => {
+    const sortedEvents = [...mockHealthRecords]
+        .filter(event => event.nextDueDate && new Date(event.nextDueDate) >= new Date())
+        .sort((a, b) => new Date(a.nextDueDate!).getTime() - new Date(b.nextDueDate!).getTime());
+    return sortedEvents[0];
+  }, []);
 
   return (
     <div className="container mx-auto p-4 sm:p-6">
@@ -75,12 +81,13 @@ export default function DashboardPage({ params }: { params: { livestock: Livesto
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {currentKpis.map((kpi) => {
-            const Icon = iconMap[kpi.label as keyof typeof iconMap] || PawPrint;
+            const IconConfig = iconMap[kpi.label as keyof typeof iconMap] || { icon: PawPrint, color: 'text-gray-400' };
+            const Icon = IconConfig.icon;
             return (
               <Card key={kpi.label} className="bg-card/50 backdrop-blur-sm border-white/10">
                 <CardHeader className="pb-2 flex flex-row items-center justify-between">
                    <div className="bg-secondary p-2 rounded-lg">
-                      <Icon className="h-5 w-5 text-primary" />
+                      <Icon className={cn("h-5 w-5", IconConfig.color)} />
                     </div>
                   {kpi.change !== undefined && (
                     <p className={cn(
@@ -143,12 +150,12 @@ export default function DashboardPage({ params }: { params: { livestock: Livesto
             <CardContent>
               <ChartContainer config={chartConfig} className="w-full h-[150px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={productionData} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
+                  <LineChart data={productionData} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
                     <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} stroke="hsl(var(--muted-foreground))" />
                     <YAxis tickLine={false} axisLine={false} tickMargin={8} stroke="hsl(var(--muted-foreground))" />
-                    <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                    <Bar dataKey="production" fill="var(--color-production)" radius={4} />
-                  </BarChart>
+                    <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
+                    <Line type="monotone" dataKey="production" stroke="var(--color-production)" strokeWidth={2} dot={{r: 4, fill: "hsl(var(--background))", stroke: "var(--color-production)" }} />
+                  </LineChart>
                 </ResponsiveContainer>
               </ChartContainer>
             </CardContent>
@@ -158,7 +165,31 @@ export default function DashboardPage({ params }: { params: { livestock: Livesto
 
        <div className="mb-6">
           <h2 className="text-xl font-bold font-headline mb-4">Smart Insights</h2>
-          <FarmInsights insight={insight} />
+          <div className="grid gap-4 md:grid-cols-2">
+            <FarmInsights insight={insight} />
+            {upcomingEvent && (
+              <Card className="bg-card/50 backdrop-blur-sm border-white/10 hover:bg-card/70 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                      <div className='flex items-center gap-4'>
+                          <div className="bg-amber-900/50 p-3 rounded-lg">
+                              <CalendarClock className="h-6 w-6 text-amber-400" />
+                          </div>
+                          <div>
+                              <h3 className="font-semibold text-foreground">Upcoming Health Event</h3>
+                              <p className="text-sm text-muted-foreground">{upcomingEvent.event} for {upcomingEvent.animalId} on {upcomingEvent.nextDueDate}</p>
+                          </div>
+                      </div>
+                      <Link href={`/${params.livestock}/health`}>
+                        <Button variant="ghost" size="icon">
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        </Button>
+                      </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
        </div>
 
     </div>

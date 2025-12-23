@@ -2,17 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ChevronLeft, Cloud, CloudOff, Sun, Cloudy, CloudRain, Plus, Settings } from 'lucide-react';
+import { ChevronLeft, Cloud, CloudOff, Sun, Settings } from 'lucide-react';
 import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-
-const weatherData = {
-  temp: 24,
-  condition: 'Sunny',
-  icon: Sun,
-};
 
 export function AppHeader({ livestock }: { livestock: string }) {
   const [isOnline, setIsOnline] = useState(true);
@@ -37,6 +29,11 @@ export function AppHeader({ livestock }: { livestock: string }) {
     <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur-sm">
       <div className="container mx-auto flex h-20 items-center justify-between gap-4">
         <div className="flex items-center gap-2">
+           <Link href="/" passHref>
+             <Button variant="ghost" size="icon" className="mr-2 h-10 w-10">
+               <ChevronLeft className="h-6 w-6" />
+             </Button>
+           </Link>
           <Avatar>
             <AvatarImage src="https://picsum.photos/seed/farm-avatar/100/100" />
             <AvatarFallback>GA</AvatarFallback>

@@ -37,9 +37,10 @@ export type ProductionRecord = {
 export type HistoryRecord = {
     id: string;
     date: string;
-    type: 'Production' | 'Financial' | 'Health';
+    type: 'Production' | 'Financial' | 'Health' | 'Feeding' | 'Inventory';
     description: string;
     details: string;
+    value?: string;
 };
 
 export type MonthlyProduction = {
