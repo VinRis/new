@@ -1,7 +1,7 @@
 'use client';
 
 import { TrendingDown, Syringe, CheckCircle, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import type { Insight } from '@/lib/types';
 import { Button } from './ui/button';
 
@@ -10,16 +10,21 @@ type FarmInsightsProps = {
 };
 
 const iconMap = {
-  TrendingDown: TrendingDown,
-  Syringe: Syringe,
-  CheckCircle: CheckCircle
+  TrendingDown,
+  Syringe,
+  CheckCircle
+};
+
+const FarmInsightsIcon = ({ iconName, ...props }: { iconName: keyof typeof iconMap, [key:string]: any}) => {
+    const Icon = iconMap[iconName];
+    return <Icon {...props} />
 }
 
 export function FarmInsights({ insight }: FarmInsightsProps) {
 
   if (!insight) {
     return (
-      <Card className="bg-card/50 backdrop-blur-sm border-white/10">
+      <Card className="bg-card/80 backdrop-blur-sm">
         <CardContent className="pt-6">
           <p className="text-muted-foreground">No insights available at the moment. Keep your data updated for personalized suggestions.</p>
         </CardContent>
@@ -30,11 +35,11 @@ export function FarmInsights({ insight }: FarmInsightsProps) {
   const Icon = iconMap[insight.icon];
 
   return (
-    <Card className="bg-card/50 backdrop-blur-sm border-white/10 hover:bg-card/70 transition-colors">
+    <Card className="bg-card/80 backdrop-blur-sm hover:bg-card/90 transition-colors h-full">
       <CardContent className="pt-6">
         <div className="flex items-center justify-between">
             <div className='flex items-center gap-4'>
-                <div className="bg-secondary p-3 rounded-lg">
+                <div className="bg-primary/10 dark:bg-secondary p-3 rounded-lg">
                     <Icon className="h-6 w-6 text-primary" />
                 </div>
                 <div>
@@ -50,3 +55,5 @@ export function FarmInsights({ insight }: FarmInsightsProps) {
     </Card>
   );
 }
+
+FarmInsights.Icon = FarmInsightsIcon;

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CowIcon, ChickenIcon, PigIcon, GoatIcon } from '@/components/icons';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { FileText, Trophy } from 'lucide-react';
+import { FileText, Trophy, Cloud, LifeBuoy } from 'lucide-react';
 
 type Livestock = {
   name: string;
@@ -23,22 +23,38 @@ const livestockTypes: Livestock[] = [
 export default function WelcomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
+      <header className="p-4 border-b">
+         <div className="container mx-auto flex items-center justify-between">
+             <h1 className="font-headline text-2xl font-bold text-primary">
+                FarmSync
+            </h1>
+            <div className="flex items-center gap-2">
+                <Button variant="ghost">
+                    <LifeBuoy className="mr-2 h-4 w-4"/>
+                    Help
+                </Button>
+                 <Button variant="link" className="p-0 h-auto">
+                    Log in
+                </Button>
+            </div>
+         </div>
+      </header>
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
         <div className="text-center mb-12">
-          <h1 className="font-headline text-4xl md:text-6xl font-bold text-primary">
-            FarmSync
+           <h1 className="font-headline text-4xl md:text-6xl font-bold text-foreground">
+            Farm Management, Simplified
           </h1>
-          <p className="text-muted-foreground mt-2 text-lg">
-            Manage your farm with intelligence and ease.
+          <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">
+            Welcome to FarmSync. Select a livestock category to get a detailed overview of your farm's performance.
           </p>
         </div>
 
         <div className="w-full max-w-5xl">
-          <h2 className="text-xl font-semibold text-center mb-6 font-headline">Select a livestock category to begin</h2>
+          <h2 className="text-xl font-semibold text-center mb-6 font-headline text-primary">Get Started</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {livestockTypes.map((livestock) => (
               <Link href={`/${livestock.slug}/dashboard`} key={livestock.slug} passHref>
-                <Card className="overflow-hidden group hover:shadow-xl transition-shadow duration-300 bg-card/50 backdrop-blur-sm border-white/10">
+                <Card className="overflow-hidden group hover:shadow-lg transition-shadow duration-300 bg-card hover:-translate-y-1">
                   <CardContent className="p-0 flex flex-col items-center text-center">
                     <div className="relative w-full h-40">
                       <Image
@@ -48,11 +64,11 @@ export default function WelcomePage() {
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         data-ai-hint={livestock.image.imageHint}
                       />
-                       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300" />
-                    </div>
-                    <div className="p-4 bg-card w-full">
-                       <livestock.icon className="h-10 w-10 text-primary mx-auto mb-2" />
-                      <h3 className="font-semibold text-lg font-headline">{livestock.name}</h3>
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/70 transition-colors duration-300" />
+                       <div className="absolute bottom-4 left-4 text-left">
+                           <livestock.icon className="h-10 w-10 text-white mb-2" />
+                           <h3 className="font-semibold text-lg font-headline text-white">{livestock.name}</h3>
+                       </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -60,7 +76,7 @@ export default function WelcomePage() {
             ))}
           </div>
             
-          <Card className="mt-8 bg-card/50 backdrop-blur-sm border-white/10">
+          <Card className="mt-8 bg-card">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="font-headline">Master Report</CardTitle>
@@ -73,12 +89,12 @@ export default function WelcomePage() {
             </CardHeader>
             <CardContent>
               <div className="border-t border-border pt-4 mt-4">
-                  <div className="flex items-center gap-4 text-amber-400">
+                  <div className="flex items-center gap-4 text-amber-500">
                     <Trophy className="h-8 w-8" />
                     <div>
                       <p className="text-sm text-muted-foreground">Top Performer</p>
-                      <h4 className="font-bold text-lg">Poultry</h4>
-                      <p className="text-sm">Highest revenue generation this quarter.</p>
+                      <h4 className="font-bold text-lg text-foreground">Poultry</h4>
+                      <p className="text-sm text-muted-foreground">Highest revenue generation this quarter.</p>
                     </div>
                   </div>
               </div>
@@ -88,18 +104,9 @@ export default function WelcomePage() {
         </div>
       </main>
 
-      <footer className="p-4 border-t bg-card">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex gap-4">
-            <Button variant="outline">App Backup</Button>
-            <Button variant="outline">Restore Backup</Button>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Have an account?{' '}
-            <Button variant="link" className="p-0 h-auto">
-              Log in to sync
-            </Button>
-          </p>
+      <footer className="p-4 border-t bg-muted/50">
+        <div className="container mx-auto text-center text-sm text-muted-foreground">
+           &copy; {new Date().getFullYear()} FarmSync. All Rights Reserved.
         </div>
       </footer>
     </div>
