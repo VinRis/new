@@ -9,6 +9,7 @@ import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import type { LivestockCategory } from "@/lib/types";
+import { useParams } from "next/navigation";
 
 const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColor: string } } = {
   Production: { icon: Droplets, color: 'text-blue-400', bgColor: 'bg-blue-900/50' },
@@ -19,7 +20,8 @@ const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColo
 };
 
 
-export default function HistoryPage({ params }: { params: { livestock: LivestockCategory } }) {
+export default function HistoryPage() {
+    const params = useParams() as { livestock: LivestockCategory };
 
     const history = useMemo(() => {
         return mockHistory.filter(h => h.livestockCategory === params.livestock);

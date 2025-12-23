@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useParams } from 'next/navigation';
 
 const chartConfig = {
   production: {
@@ -38,7 +39,8 @@ const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColo
 };
 
 
-export default function DashboardPage({ params }: { params: { livestock: LivestockCategory } }) {
+export default function DashboardPage() {
+  const params = useParams() as { livestock: LivestockCategory };
   const [isInsightModalOpen, setInsightModalOpen] = useState(false);
   const currentKpis = kpis[params.livestock] || [];
   const userName = "John";

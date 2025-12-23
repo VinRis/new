@@ -13,6 +13,7 @@ import type { LivestockCategory, Animal, AnimalHealthStatus } from "@/lib/types"
 import { cn } from "@/lib/utils";
 import { PlusCircle, Search, MoreVertical, Edit, Trash, Droplet, TrendingUp, BarChart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useParams } from 'next/navigation';
 
 const healthStatusColors: { [key in AnimalHealthStatus]: string } = {
     Healthy: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
@@ -71,7 +72,8 @@ const AddEditAnimalForm = ({ animal, onSave, livestockCategory }: { animal?: Ani
 };
 
 
-export default function HerdPage({ params }: { params: { livestock: LivestockCategory } }) {
+export default function HerdPage() {
+    const params = useParams() as { livestock: LivestockCategory };
     const [animals, setAnimals] = useState(initialAnimals);
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const [editingAnimal, setEditingAnimal] = useState<Animal | undefined>(undefined);

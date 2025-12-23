@@ -12,6 +12,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import type { LivestockCategory } from "@/lib/types";
 import { useMemo } from "react";
 import Link from 'next/link';
+import { useParams } from "next/navigation";
 
 const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColor: string } } = {
   'Milk Sale': { icon: TrendingUp, color: 'text-green-500', bgColor: 'bg-green-100 dark:bg-green-900/50' },
@@ -24,7 +25,8 @@ const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColo
 };
 
 
-export default function FinancePage({ params }: { params: { livestock: LivestockCategory } }) {
+export default function FinancePage() {
+  const params = useParams() as { livestock: LivestockCategory };
   const currency = '$'; // Placeholder
   const transactions = useMemo(() => {
     return mockTransactions.filter(tx => tx.livestockCategory === params.livestock || tx.livestockCategory === 'general');

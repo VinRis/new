@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useMemo } from "react";
 import type { LivestockCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useParams } from "next/navigation";
 
 const eventIconMap: { [key: string]: { icon: React.ElementType, color: string, bgColor: string } } = {
   'Vaccination': { icon: Syringe, color: 'text-blue-500', bgColor: 'bg-blue-100 dark:bg-blue-900/50' },
@@ -19,7 +20,8 @@ const eventIconMap: { [key: string]: { icon: React.ElementType, color: string, b
   'Check-up': { icon: Activity, color: 'text-indigo-500', bgColor: 'bg-indigo-100 dark:bg-indigo-900/50' },
 };
 
-export default function HealthPage({ params }: { params: { livestock: LivestockCategory } }) {
+export default function HealthPage() {
+    const params = useParams() as { livestock: LivestockCategory };
     const healthRecords = useMemo(() => {
         return mockHealthRecords.filter(r => r.livestockCategory === params.livestock);
     }, [params.livestock]);
