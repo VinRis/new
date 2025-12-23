@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -16,7 +17,8 @@ export function AppHeader({ livestock }: { livestock: string }) {
 
   useEffect(() => {
     setIsClient(true);
-    if (typeof window !== 'undefined') {
+    // This check is important to prevent errors on the server
+    if (typeof window !== 'undefined' && 'onLine' in navigator) {
       setIsOnline(navigator.onLine);
       const handleOnline = () => setIsOnline(true);
       const handleOffline = () => setIsOnline(false);
@@ -70,3 +72,5 @@ export function AppHeader({ livestock }: { livestock: string }) {
     </header>
   );
 }
+
+    
