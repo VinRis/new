@@ -25,20 +25,11 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setIsClient(true);
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    setIsDark(isDarkMode);
+    // Logic to read from localStorage is now removed to prevent hydration errors.
+    // The app will default to light mode.
+    document.documentElement.classList.remove('dark');
   }, []);
   
-  const toggleDarkMode = (checked: boolean) => {
-    setIsDark(checked);
-    if (checked) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
   
   if (!isClient) {
     return null; // or a skeleton loader
@@ -90,13 +81,6 @@ export default function SettingsPage() {
                   <SelectItem value="kes">KES (Ksh)</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-            <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
-                    <Label htmlFor="dark-mode">Dark Mode</Label>
-                    <p className="text-sm text-muted-foreground">Toggle between light and dark themes.</p>
-                </div>
-                <Switch id="dark-mode" checked={isDark} onCheckedChange={toggleDarkMode} />
             </div>
           </CardContent>
         </Card>
