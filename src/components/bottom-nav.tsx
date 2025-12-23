@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, BarChart2, DollarSign, HeartPulse, Settings, Plus, Droplets, Egg, Edit, FileText } from 'lucide-react';
+import { Home, BarChart2, DollarSign, HeartPulse, Settings, Plus, Droplets, Egg, Edit, FileText, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
@@ -72,6 +72,9 @@ export function BottomNav({ livestock }: { livestock: string }) {
                   </Button>
                   <Button variant="outline" size="lg" className="justify-start text-base py-6">
                     <HeartPulse className="mr-2 h-5 w-5 text-primary"/> Add Health Record
+                  </Button>
+                   <Button variant="outline" size="lg" className="justify-start text-base py-6">
+                    <Package className="mr-2 h-5 w-5 text-primary"/> Add Feed Entry
                   </Button>
                 </div>
               </DialogContent>

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileDown } from "lucide-react";
+import { FileDown, Package } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { feedInventory } from "@/lib/data";
 
 export default function ReportsPage() {
   return (
@@ -10,7 +12,7 @@ export default function ReportsPage() {
         <p className="text-muted-foreground">Generate and export professional reports.</p>
       </div>
 
-      <div className="max-w-2xl mx-auto">
+      <div className="grid gap-8">
         <Card>
           <CardHeader>
             <CardTitle className="font-headline">Generate Farm Report</CardTitle>
@@ -27,6 +29,36 @@ export default function ReportsPage() {
                 Generate Report
               </Button>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline flex items-center gap-2">
+              <Package className="h-6 w-6 text-primary" />
+              Feed Inventory Summary
+            </CardTitle>
+            <CardDescription>
+              A summary of your current feed stock levels.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+             <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Feed Type</TableHead>
+                    <TableHead className="text-right">Remaining Quantity</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {feedInventory.map((feed) => (
+                    <TableRow key={feed.name}>
+                      <TableCell className="font-medium">{feed.name}</TableCell>
+                      <TableCell className="text-right">{feed.quantity} {feed.unit}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
           </CardContent>
         </Card>
       </div>

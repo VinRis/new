@@ -1,4 +1,4 @@
-import type { Kpi, Transaction, HealthRecord, HistoryRecord } from './types';
+import type { Kpi, Transaction, HealthRecord, HistoryRecord, MonthlyProduction, LivestockCategory, Insight } from './types';
 
 export const livestockDisplayNames: Record<string, string> = {
   'dairy': 'Dairy',
@@ -9,29 +9,87 @@ export const livestockDisplayNames: Record<string, string> = {
 
 export const kpis: Record<string, Kpi[]> = {
   dairy: [
-    { label: 'Milk Production', value: 4500, unit: 'L', change: 5.2 },
-    { label: 'Avg. Herd Age', value: 4.2, unit: 'yrs', change: -0.1 },
+    { label: 'Milk Production', value: 4500, unit: 'L/day', change: 5.2 },
+    { label: 'Total Herd', value: 145, unit: 'cows', change: 1.4 },
+    { label: 'Feed Stock', value: 250, unit: 'kg', change: -10 },
     { label: 'Feed Cost/Liter', value: 0.25, unit: '$', change: 2.1 },
-    { label: 'Revenue', value: 11250, unit: '$', change: 15.3 },
   ],
   poultry: [
-    { label: 'Egg Production', value: 12000, unit: 'eggs', change: 8.1 },
-    { label: 'Feed Conversion', value: 2.1, unit: 'ratio', change: -0.05 },
+    { label: 'Egg Production', value: 12000, unit: 'eggs/day', change: 8.1 },
+    { label: 'Flock Size', value: 2500, unit: 'birds', change: 0 },
+    { label: 'Feed Stock', value: 500, unit: 'kg', change: -5 },
     { label: 'Mortality Rate', value: 2.5, unit: '%', change: -0.5 },
-    { label: 'Revenue', value: 4800, unit: '$', change: 12.0 },
   ],
   pigs: [
     { label: 'Avg. Weight Gain', value: 0.8, unit: 'kg/day', change: 0.05 },
-    { label: 'Litter Size', value: 11, unit: 'avg', change: 0.5 },
+    { label: 'Total Herd', value: 500, unit: 'pigs', change: 5 },
+    { label: 'Feed Stock', value: 800, unit: 'kg', change: -8 },
     { label: 'Market Price', value: 1.5, unit: '$/kg', change: -3.2 },
-    { label: 'Revenue', value: 25000, unit: '$', change: 8.7 },
   ],
   'goats-sheep': [
-    { label: 'Wool Production', value: 350, unit: 'kg', change: 4.0 },
-    { label: 'Milk Yield (Goat)', value: 800, unit: 'L', change: 2.5 },
+    { label: 'Milk Yield (Goat)', value: 800, unit: 'L/day', change: 2.5 },
+    { label: 'Total Herd', value: 300, unit: 'head', change: 2 },
+    { label: 'Feed Stock', value: 400, unit: 'kg', change: -12 },
     { label: 'Lambing Rate', value: 1.8, unit: 'avg', change: 0.2 },
-    { label: 'Revenue', value: 9500, unit: '$', change: 9.1 },
   ],
+};
+
+export const monthlyProduction: Record<string, MonthlyProduction[]> = {
+  dairy: [
+    { month: 'Jan', production: 120000 },
+    { month: 'Feb', production: 110000 },
+    { month: 'Mar', production: 135000 },
+    { month: 'Apr', production: 140000 },
+    { month: 'May', production: 155000 },
+    { month: 'Jun', production: 150000 },
+  ],
+  poultry: [
+    { month: 'Jan', production: 360000 },
+    { month: 'Feb', production: 330000 },
+    { month: 'Mar', production: 370000 },
+    { month: 'Apr', production: 380000 },
+    { month: 'May', production: 400000 },
+    { month: 'Jun', production: 390000 },
+  ],
+}
+
+export const feedInventory = [
+    { name: "Dairy Concentrate", quantity: 250, unit: "kg" },
+    { name: "Poultry Layers Mash", quantity: 500, unit: "kg" },
+    { name: "Pig Finisher", quantity: 800, unit: "kg" },
+    { name: "Goat Pellets", quantity: 400, unit: "kg" },
+    { name: "Hay Bales", quantity: 50, unit: "bales" },
+];
+
+export const getInsight = (livestock: LivestockCategory, kpis: Kpi[]): Insight | null => {
+    const production = kpis.find(k => k.label.includes('Production') || k.label.includes('Yield'));
+    const feed = kpis.find(k => k.label.includes('Feed Stock'));
+
+    if (production && typeof production.change === 'number' && production.change < 0) {
+        return {
+            title: 'Production Dip Alert',
+            description: `${production.label} has decreased by ${Math.abs(production.change)}% this month. Review feeding and health records for potential causes.`,
+        };
+    }
+
+    if (feed && typeof feed.change === 'number' && feed.change < -15) {
+         return {
+            title: 'Low Feed Stock',
+            description: `${feed.label} is running low. Time to reorder to avoid shortages.`,
+        };
+    }
+    
+    if (livestock === 'pigs' ) {
+         return {
+            title: 'Vaccination Due',
+            description: '15 piglets are scheduled for iron shots tomorrow morning.',
+        };
+    }
+
+    return {
+        title: 'All Systems Normal',
+        description: 'Your farm is performing well based on the latest data. Keep up the great work!',
+    };
 };
 
 export const mockTransactions: Transaction[] = [

@@ -38,3 +38,13 @@ export type HistoryRecord = {
     description: string;
     details: string;
 };
+
+export type MonthlyProduction = {
+  month: string;
+  production: number;
+};
+
+export type Insight = {
+    title: string;
+    description: string;
+};
