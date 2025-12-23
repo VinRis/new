@@ -6,6 +6,7 @@ import { BottomNav } from '@/components/bottom-nav';
 import { AddRecordFAB } from '@/components/add-record-fab';
 import { useParams } from 'next/navigation';
 import type { LivestockCategory } from '@/lib/types';
+import { FarmProvider } from '@/context/farm-context';
 
 export default function LivestockLayout({
   children,
@@ -15,11 +16,13 @@ export default function LivestockLayout({
   const params = useParams() as { livestock: LivestockCategory };
   
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <AppHeader livestock={params.livestock} />
-      <main className="flex-1 pb-24">{children}</main>
-      <BottomNav livestock={params.livestock} />
-      <AddRecordFAB />
-    </div>
+    <FarmProvider>
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <AppHeader livestock={params.livestock} />
+        <main className="flex-1 pb-24">{children}</main>
+        <BottomNav livestock={params.livestock} />
+        <AddRecordFAB />
+      </div>
+    </FarmProvider>
   );
 }

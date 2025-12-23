@@ -67,3 +67,8 @@ export type Animal = {
   avgYield: number;
   lastWeight: number;
 };
+
+export type WeatherData = {
+    temp: number;
+    description: string;
+};

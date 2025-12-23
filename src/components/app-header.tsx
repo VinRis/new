@@ -6,8 +6,11 @@ import { ChevronLeft, Cloud, CloudOff, Settings } from 'lucide-react';
 import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
+import { useFarm } from '@/context/farm-context';
+import { livestockDisplayNames } from '@/lib/data';
 
 export function AppHeader({ livestock }: { livestock: string }) {
+  const { farmName, farmLocation } = useFarm();
   const [isOnline, setIsOnline] = useState(true);
   const [isClient, setIsClient] = useState(false);
 
@@ -40,8 +43,10 @@ export function AppHeader({ livestock }: { livestock: string }) {
             <AvatarFallback>GA</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-lg font-bold font-headline text-foreground">Green Acres Farm</h1>
-            <p className="text-sm text-muted-foreground">Vermont, USA</p>
+            <h1 className="text-lg font-bold font-headline text-foreground">{farmName}</h1>
+            <p className="text-sm text-muted-foreground">
+                {livestockDisplayNames[livestock]} - {farmLocation}
+            </p>
           </div>
         </div>
 

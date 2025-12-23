@@ -8,8 +8,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { LogOut, Palette, User, Building, Landmark } from "lucide-react";
+import { useFarm } from "@/context/farm-context";
 
 export default function SettingsPage() {
+  const { 
+    farmName, setFarmName, 
+    managerName, setManagerName,
+    farmLocation, setFarmLocation,
+    currency, setCurrency 
+  } = useFarm();
+  
   const [isDark, setIsDark] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Simulate user being logged in
@@ -45,11 +53,15 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="farm-name">Farm Name</Label>
-              <Input id="farm-name" defaultValue="Sunrise Farms" />
+              <Input id="farm-name" value={farmName} onChange={(e) => setFarmName(e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="farm-manager">Farm Manager</Label>
-              <Input id="farm-manager" defaultValue="Jane Doe" />
+              <Input id="farm-manager" value={managerName} onChange={(e) => setManagerName(e.target.value)} />
+            </div>
+             <div className="space-y-2">
+              <Label htmlFor="farm-location">Farm Location</Label>
+              <Input id="farm-location" value={farmLocation} onChange={(e) => setFarmLocation(e.target.value)} placeholder="e.g., Vermont, USA"/>
             </div>
           </CardContent>
         </Card>
@@ -61,7 +73,7 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="currency">Currency</Label>
-               <Select defaultValue="usd">
+               <Select value={currency} onValueChange={(value: "usd" | "eur" | "gbp" | "kes") => setCurrency(value)}>
                 <SelectTrigger id="currency">
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>

@@ -1,18 +1,19 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { kpis, monthlyProduction, getInsight, mockHealthRecords, mockAnimals } from '@/lib/data';
+import { kpis, monthlyProduction, getInsight, mockHealthRecords, mockAnimals, feedInventory } from '@/lib/data';
 import type { LivestockCategory } from '@/lib/types';
-import { ArrowUp, ArrowDown, PawPrint, Droplet, HeartPulse, TrendingDown, Syringe, CheckCircle, Sun, Activity, AlertTriangle, ChevronRight, CalendarClock, Bell, ArrowRight } from 'lucide-react';
+import { ArrowUp, ArrowDown, PawPrint, Droplet, HeartPulse, TrendingDown, Syringe, CheckCircle, Sun, Activity, AlertTriangle, ChevronRight, CalendarClock, Bell, ArrowRight, Package } from 'lucide-react';
 import { FarmInsights } from '@/components/farm-insights';
 import { cn } from '@/lib/utils';
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useParams } from 'next/navigation';
+import { useFarm } from '@/context/farm-context';
 
 const chartConfig = {
   production: {
@@ -41,15 +42,30 @@ const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColo
 
 export default function DashboardPage() {
   const params = useParams() as { livestock: LivestockCategory };
+  const { farmName, managerName, farmLocation, weather } = useFarm();
   const [isInsightModalOpen, setInsightModalOpen] = useState(false);
+  const [greeting, setGreeting] = useState('');
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      setGreeting('Good Morning');
+    } else if (hour < 18) {
+      setGreeting('Good Afternoon');
+    } else {
+      setGreeting('Good Evening');
+    }
+  }, []);
+
   const currentKpis = kpis[params.livestock] || [];
-  const userName = "John";
   const productionData = monthlyProduction[params.livestock] || [];
   const insight = getInsight(params.livestock, currentKpis);
 
   const showChart = params.livestock === 'dairy' || params.livestock === 'poultry';
+  const showHerdHealth = params.livestock === 'dairy' || params.livestock === 'pigs';
 
   const herdHealth = useMemo(() => {
+    if (!showHerdHealth) return null;
     const healthCounts = {
       Healthy: 0,
       Monitoring: 0,
@@ -63,9 +79,9 @@ export default function DashboardPage() {
         monitoring: healthCounts.Monitoring,
         sick: healthCounts.Sick
     };
-  }, [params.livestock]);
+  }, [params.livestock, showHerdHealth]);
 
-  const totalAnimals = herdHealth.healthy + herdHealth.monitoring + herdHealth.sick;
+  const totalAnimals = herdHealth ? herdHealth.healthy + herdHealth.monitoring + herdHealth.sick : 0;
   
   const upcomingEvent = useMemo(() => {
     const sortedEvents = [...mockHealthRecords]
@@ -78,13 +94,15 @@ export default function DashboardPage() {
     <>
       <div className="container mx-auto p-4 sm:p-6">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold font-headline text-foreground">Good Morning, {userName}</h1>
+          <h1 className="text-3xl font-bold font-headline text-foreground">{greeting}, {managerName}</h1>
           <div className="flex items-center justify-between text-muted-foreground">
             <p>Here's what's happening on the farm today.</p>
-            <div className="flex items-center gap-2">
-              <Sun className="h-5 w-5 text-amber-500" />
-              <span>24°C Sunny</span>
-            </div>
+             {weather && (
+              <div className="flex items-center gap-2">
+                <Sun className="h-5 w-5 text-amber-500" />
+                <span>{weather.temp}°C {weather.description}</span>
+              </div>
+            )}
           </div>
         </div>
         
@@ -128,35 +146,61 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-6">
-          <Card className="bg-card/80 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span className="font-headline">Herd Health Status</span>
-                <span className="text-xs font-normal text-muted-foreground">Updated 10m ago</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="w-full h-3 rounded-full bg-muted flex overflow-hidden mb-2">
-                <div className="progress-bar-segment bg-green-500" style={{ width: `${(herdHealth.healthy / totalAnimals) * 100}%` }}></div>
-                <div className="progress-bar-segment bg-yellow-500" style={{ width: `${(herdHealth.monitoring / totalAnimals) * 100}%` }}></div>
-                <div className="progress-bar-segment bg-red-500" style={{ width: `${(herdHealth.sick / totalAnimals) * 100}%` }}></div>
-              </div>
-              <div className="flex justify-between text-sm">
-                  <div className="text-center">
-                      <p className="text-muted-foreground">Healthy</p>
-                      <p className="font-bold text-lg">{herdHealth.healthy}</p>
-                  </div>
-                   <div className="text-center">
-                      <p className="text-muted-foreground">Monitoring</p>
-                      <p className="font-bold text-lg">{herdHealth.monitoring}</p>
-                  </div>
-                   <div className="text-center">
-                      <p className="text-muted-foreground">Sick</p>
-                      <p className="font-bold text-lg">{herdHealth.sick}</p>
-                  </div>
-              </div>
-            </CardContent>
-          </Card>
+          {showHerdHealth && herdHealth && (
+            <Card className="bg-card/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="font-headline">Herd Health Status</span>
+                  <span className="text-xs font-normal text-muted-foreground">Updated 10m ago</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="w-full h-3 rounded-full bg-muted flex overflow-hidden mb-2">
+                  <div className="progress-bar-segment bg-green-500" style={{ width: `${(herdHealth.healthy / totalAnimals) * 100}%` }}></div>
+                  <div className="progress-bar-segment bg-yellow-500" style={{ width: `${(herdHealth.monitoring / totalAnimals) * 100}%` }}></div>
+                  <div className="progress-bar-segment bg-red-500" style={{ width: `${(herdHealth.sick / totalAnimals) * 100}%` }}></div>
+                </div>
+                <div className="flex justify-between text-sm">
+                    <div className="text-center">
+                        <p className="text-muted-foreground">Healthy</p>
+                        <p className="font-bold text-lg">{herdHealth.healthy}</p>
+                    </div>
+                     <div className="text-center">
+                        <p className="text-muted-foreground">Monitoring</p>
+                        <p className="font-bold text-lg">{herdHealth.monitoring}</p>
+                    </div>
+                     <div className="text-center">
+                        <p className="text-muted-foreground">Sick</p>
+                        <p className="font-bold text-lg">{herdHealth.sick}</p>
+                    </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+           {!showHerdHealth && (
+             <Card>
+                <CardHeader>
+                  <CardTitle className="font-headline flex items-center gap-2">
+                    <Package className="h-6 w-6 text-primary" />
+                    Feed Inventory
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                   <div className="space-y-4">
+                        {feedInventory.slice(0, 3).map((feed) => (
+                        <div key={feed.name} className="flex justify-between items-center text-sm">
+                            <p className="font-medium text-muted-foreground">{feed.name}</p>
+                            <p className="font-bold text-foreground">{feed.quantity} {feed.unit}</p>
+                        </div>
+                        ))}
+                    </div>
+                    <Button variant="link" asChild className="p-0 h-auto mt-2">
+                        <Link href={`/${params.livestock}/reports`}>View Full Inventory</Link>
+                    </Button>
+                </CardContent>
+              </Card>
+           )}
 
           {showChart && (
             <Card className="bg-card/80 backdrop-blur-sm">
