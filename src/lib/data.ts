@@ -1,3 +1,4 @@
+
 import type { Kpi, Transaction, HealthRecord, HistoryRecord, MonthlyProduction, LivestockCategory, Insight, Animal } from './types';
 
 export const livestockDisplayNames: Record<string, string> = {
@@ -18,7 +19,7 @@ export const kpis: Record<string, Kpi[]> = {
     { label: 'Egg Production', value: '12,000', unit: 'eggs/day', change: 8.1 },
     { label: 'Flock Size', value: 2500, unit: 'birds', change: 0 },
     { label: 'Feed Conversion', value: 2.1, unit: 'kg/dozen', change: -0.1 },
-    { label: 'Avg. Egg Weight', value: 60, unit: 'g', change: 0.5 },
+    { label: 'Egg Laying Ratio', value: 92, unit: '%', change: 1.5 },
   ],
   pigs: [
     { label: 'Avg. Weight Gain', value: 0.8, unit: 'kg/day', change: 0.05 },

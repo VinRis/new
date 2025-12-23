@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -25,6 +26,7 @@ const AddEditAnimalForm = ({ animal, onSave, livestockCategory }: { animal?: Ani
     const [tag, setTag] = useState(animal?.tag || '');
     const [healthStatus, setHealthStatus] = useState<AnimalHealthStatus>(animal?.healthStatus || 'Healthy');
     const [avgYield, setAvgYield] = useState(animal?.avgYield || 0);
+    const [lastWeight, setLastWeight] = useState(animal?.lastWeight || 0);
 
     const handleSubmit = () => {
         const newAnimalData: Animal = {
@@ -33,7 +35,7 @@ const AddEditAnimalForm = ({ animal, onSave, livestockCategory }: { animal?: Ani
             livestockCategory,
             healthStatus,
             avgYield,
-            lastWeight: 0, // Placeholder
+            lastWeight,
         };
         onSave(newAnimalData);
     };
@@ -63,9 +65,15 @@ const AddEditAnimalForm = ({ animal, onSave, livestockCategory }: { animal?: Ani
             </div>
              <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="avgYield" className="text-right">
-                    Avg Yield
+                    Avg. Production
                 </Label>
                 <Input id="avgYield" type="number" value={avgYield} onChange={(e) => setAvgYield(Number(e.target.value))} className="col-span-3" />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="lastWeight" className="text-right">
+                    Last Weight (kg)
+                </Label>
+                <Input id="lastWeight" type="number" value={lastWeight} onChange={(e) => setLastWeight(Number(e.target.value))} className="col-span-3" />
             </div>
         </div>
     );
@@ -111,7 +119,7 @@ export default function HerdPage() {
      const getProductionUnit = () => {
       switch (params.livestock) {
         case 'dairy': return 'L/day';
-        case 'pigs': return 'kg/day';
+        case 'pigs': return 'kg/day gain';
         default: return '';
       }
     };
@@ -143,13 +151,15 @@ export default function HerdPage() {
                                 // A bit of a hack to get form data submitted
                                 // In a real app, you'd use a form library
                                 const tagInput = document.getElementById('tag') as HTMLInputElement;
+                                const yieldInput = document.getElementById('avgYield') as HTMLInputElement;
+                                const weightInput = document.getElementById('lastWeight') as HTMLInputElement;
                                 handleSave({
                                      id: `animal-${Date.now()}`,
                                      tag: tagInput.value,
                                      livestockCategory: params.livestock,
                                      healthStatus: 'Healthy',
-                                     avgYield: 0,
-                                     lastWeight: 0,
+                                     avgYield: parseFloat(yieldInput.value),
+                                     lastWeight: parseFloat(weightInput.value),
                                 });
                             }}>Save</Button>
                         </DialogFooter>
@@ -191,12 +201,21 @@ export default function HerdPage() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex items-center justify-between text-sm text-muted-foreground">
-                                <div className="flex items-center gap-2">
-                                    {getProductionIcon()}
-                                    <span>Avg. Production</span>
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                    <div className="flex items-center gap-2">
+                                        {getProductionIcon()}
+                                        <span>Avg. Production</span>
+                                    </div>
+                                    <span className="font-semibold text-foreground">{animal.avgYield} {getProductionUnit()}</span>
                                 </div>
-                                <span className="font-semibold text-foreground">{animal.avgYield} {getProductionUnit()}</span>
+                                 <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                    <div className="flex items-center gap-2">
+                                        <TrendingUp className="h-4 w-4 text-green-500" />
+                                        <span>Last Weight</span>
+                                    </div>
+                                    <span className="font-semibold text-foreground">{animal.lastWeight} kg</span>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -216,14 +235,17 @@ export default function HerdPage() {
                         </DialogClose>
                         <Button type="button" onClick={() => {
                             if (editingAnimal) {
-                                // another hack
+                                // another hack to get form state
                                 const tagInput = document.getElementById('tag') as HTMLInputElement;
                                 const yieldInput = document.getElementById('avgYield') as HTMLInputElement;
-
+                                const weightInput = document.getElementById('lastWeight') as HTMLInputElement;
+                                const healthSelect = document.querySelector('[data-radix-collection-item]') as HTMLElement; // Not reliable
+                                
                                 handleSave({
                                      ...editingAnimal,
                                      tag: tagInput.value,
-                                     avgYield: parseFloat(yieldInput.value)
+                                     avgYield: parseFloat(yieldInput.value),
+                                     lastWeight: parseFloat(weightInput.value),
                                 });
                             }
                         }}>Save Changes</Button>
@@ -233,3 +255,4 @@ export default function HerdPage() {
         </div>
     );
 }
+
