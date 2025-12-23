@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useState, useEffect } from "react";
@@ -24,14 +25,16 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setIsClient(true);
-    const isDarkMode = document.documentElement.classList.contains('dark');
+    const theme = localStorage.getItem('theme');
+    const isDarkMode = theme === 'dark';
     setIsDark(isDarkMode);
+    document.documentElement.classList.toggle('dark', isDarkMode);
   }, []);
 
   const toggleDarkMode = (checked: boolean) => {
-    document.documentElement.classList.toggle('dark', checked);
-    localStorage.setItem('theme', checked ? 'dark' : 'light');
     setIsDark(checked);
+    localStorage.setItem('theme', checked ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', checked);
   };
   
   if (!isClient) {
