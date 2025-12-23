@@ -11,8 +11,10 @@ import { LogOut, Palette, User, Building, Landmark } from "lucide-react";
 
 export default function SettingsPage() {
   const [isDark, setIsDark] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const isDarkMode = document.documentElement.classList.contains('dark');
     setIsDark(isDarkMode);
   }, []);
@@ -28,6 +30,10 @@ export default function SettingsPage() {
     setIsDark(checked);
   };
   
+  if (!isClient) {
+    return null; // or a skeleton loader
+  }
+
   return (
     <div className="container mx-auto p-4 sm:p-6">
       <div className="mb-8">
