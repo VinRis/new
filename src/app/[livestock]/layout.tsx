@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode } from 'react';
 import { AppHeader } from '@/components/app-header';
 import { BottomNav } from '@/components/bottom-nav';
