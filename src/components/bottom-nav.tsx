@@ -22,7 +22,7 @@ const NavItem = ({ href, label, icon: Icon, livestock }: NavItemProps) => {
   return (
     <Link href={`/${livestock}${href}`} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
       <Icon className={cn('h-6 w-6', isActive && 'text-primary')} />
-      <span className={cn('text-xs', isActive && 'text-primary font-semibold')}>{label}</span>
+      <span className={cn('text-xs font-medium', isActive && 'text-primary font-semibold')}>{label}</span>
     </Link>
   );
 };
@@ -31,17 +31,16 @@ export function BottomNav({ livestock }: { livestock: string }) {
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/history', label: 'History', icon: BarChart2 },
-    { href: '/finance', label: 'Finance', icon: DollarSign },
   ];
 
   const navItemsRight = [
+    { href: '/finance', label: 'Finance', icon: DollarSign },
     { href: '/health', label: 'Health', icon: HeartPulse },
-    { href: '/reports', label: 'Reports', icon: FileText },
-    { href: '/settings', label: 'Settings', icon: Settings },
+    { href: '/settings', label: 'Profile', icon: Settings },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 h-20 bg-card border-t shadow-t-lg z-50">
+    <nav className="fixed bottom-0 left-0 right-0 h-20 bg-card border-t shadow-t-lg z-50 rounded-t-2xl">
       <div className="container mx-auto h-full flex justify-around items-center">
         <div className="flex justify-around w-full relative">
           {navItems.map((item) => (
@@ -53,7 +52,7 @@ export function BottomNav({ livestock }: { livestock: string }) {
               <DialogTrigger asChild>
                 <Button
                   size="icon"
-                  className="w-16 h-16 rounded-full bg-accent text-accent-foreground shadow-lg hover:bg-accent/90 focus:ring-accent"
+                  className="w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 focus:ring-primary active:scale-95 transition-transform duration-200"
                   aria-label="Add New Record"
                 >
                   <Plus className="h-8 w-8" />

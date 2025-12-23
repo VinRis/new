@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export type LivestockCategory = 'dairy' | 'poultry' | 'pigs' | 'goats-sheep';
 
 export type Kpi = {
@@ -5,6 +7,7 @@ export type Kpi = {
   value: string | number;
   unit?: string;
   change?: number;
+  icon?: LucideIcon;
 };
 
 export type Transaction = {
@@ -47,4 +50,5 @@ export type MonthlyProduction = {
 export type Insight = {
     title: string;
     description: string;
+    icon: 'TrendingDown' | 'Syringe' | 'CheckCircle';
 };

@@ -12,6 +12,7 @@ import { LogOut, Palette, User, Building, Landmark } from "lucide-react";
 export default function SettingsPage() {
   const [isDark, setIsDark] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Simulate user being logged in
 
   useEffect(() => {
     setIsClient(true);
@@ -20,13 +21,8 @@ export default function SettingsPage() {
   }, []);
 
   const toggleDarkMode = (checked: boolean) => {
-    if(checked) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    document.documentElement.classList.toggle('dark', checked);
+    localStorage.setItem('theme', checked ? 'dark' : 'light');
     setIsDark(checked);
   };
   
@@ -93,9 +89,11 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
              <Button variant="outline" className="w-full">Our Pricing Plan</Button>
-            <Button variant="destructive" className="w-full">
-              <LogOut className="mr-2 h-4 w-4" /> Log Out
-            </Button>
+            {isLoggedIn && (
+              <Button variant="destructive" className="w-full" onClick={() => setIsLoggedIn(false)}>
+                <LogOut className="mr-2 h-4 w-4" /> Log Out
+              </Button>
+            )}
           </CardContent>
         </Card>
       </div>

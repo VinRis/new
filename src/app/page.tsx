@@ -37,7 +37,7 @@ export default function WelcomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {livestockTypes.map((livestock) => (
               <Link href={`/${livestock.slug}/dashboard`} key={livestock.slug} passHref>
-                <Card className="overflow-hidden group hover:shadow-xl transition-shadow duration-300">
+                <Card className="overflow-hidden group hover:shadow-xl transition-shadow duration-300 bg-card/50 backdrop-blur-sm border-white/10">
                   <CardContent className="p-0 flex flex-col items-center text-center">
                     <div className="relative w-full h-40">
                       <Image
@@ -47,7 +47,7 @@ export default function WelcomePage() {
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         data-ai-hint={livestock.image.imageHint}
                       />
-                       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300" />
+                       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300" />
                     </div>
                     <div className="p-4 bg-card w-full">
                        <livestock.icon className="h-10 w-10 text-primary mx-auto mb-2" />

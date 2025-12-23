@@ -10,7 +10,7 @@ export default function LivestockLayout({
   params: { livestock: string };
 }) {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       <AppHeader livestock={params.livestock} />
       <main className="flex-1 pb-24">{children}</main>
       <BottomNav livestock={params.livestock} />
