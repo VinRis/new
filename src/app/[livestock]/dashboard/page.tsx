@@ -43,7 +43,7 @@ const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColo
 
 export default function DashboardPage() {
   const params = useParams() as { livestock: LivestockCategory };
-  const { farmName, managerName, farmLocation, weather } = useFarm();
+  const { farmName, managerName } = useFarm();
   const [isInsightModalOpen, setInsightModalOpen] = useState(false);
   const [greeting, setGreeting] = useState('');
 
@@ -98,12 +98,6 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold font-headline text-foreground">{greeting}, {managerName}</h1>
           <div className="flex items-center justify-between text-muted-foreground">
             <p>Here's what's happening on the farm today.</p>
-             {weather && (
-              <div className="flex items-center gap-2">
-                <Sun className="h-5 w-5 text-amber-500" />
-                <span>{weather.temp}°C {weather.description}</span>
-              </div>
-            )}
           </div>
         </div>
         
@@ -280,5 +274,3 @@ export default function DashboardPage() {
     </>
   );
 }
-
-    
