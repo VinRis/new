@@ -92,27 +92,30 @@ export const getInsight = (livestock: LivestockCategory, kpis: Kpi[]): Insight |
 };
 
 export const mockTransactions: Transaction[] = [
-  { id: '1', date: '2023-10-26T10:00:00.000Z', category: 'Expense', item: 'Cattle Feed', amount: 500.00 },
-  { id: '2', date: '2023-10-25T11:00:00.000Z', category: 'Income', item: 'Milk Sale', amount: 1200.00 },
-  { id: '3', date: '2023-10-24T12:00:00.000Z', category: 'Expense', item: 'Veterinary Services', amount: 150.00 },
-  { id: '4', date: '2023-10-23T13:00:00.000Z', category: 'Income', item: 'Sale of a Calf', amount: 300.00 },
-  { id: '5', date: '2023-09-15T14:00:00.000Z', category: 'Expense', item: 'Equipment Repair', amount: 75.50 },
+  { id: '1', date: '2023-10-26', category: 'Expense', item: 'Cattle Feed', amount: 500.00, livestockCategory: 'dairy' },
+  { id: '2', date: '2023-10-25', category: 'Income', item: 'Milk Sale', amount: 1200.00, livestockCategory: 'dairy' },
+  { id: '3', date: '2023-10-24', category: 'Expense', item: 'Veterinary Services', amount: 150.00, livestockCategory: 'pigs' },
+  { id: '4', date: '2023-10-23', category: 'Income', item: 'Sale of a Calf', amount: 300.00, livestockCategory: 'dairy' },
+  { id: '5', date: '2023-09-15', category: 'Expense', item: 'Equipment Repair', amount: 75.50, livestockCategory: 'general' },
+  { id: '6', date: '2023-10-26', category: 'Income', item: 'Egg Sale', amount: 800.00, livestockCategory: 'poultry' },
+  { id: '7', date: '2023-10-25', category: 'Expense', item: 'Poultry Feed', amount: 400.00, livestockCategory: 'poultry' },
 ];
 
 export const mockHealthRecords: HealthRecord[] = [
-  { id: '1', date: '2023-10-20', animalId: 'Cow-012', event: 'Vaccination', notes: 'Bovine Viral Diarrhea vaccine', nextDueDate: '2024-10-20' },
-  { id: '2', date: '2023-10-15', animalId: 'Cow-007', event: 'Deworming', notes: 'Oral drench administered' },
-  { id: '3', date: '2023-10-10', animalId: 'Cow-012', event: 'Check-up', notes: 'Routine check, good condition' },
-  { id: '4', date: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0], animalId: 'Calf-034', event: 'Treatment', notes: 'Follow-up for scours', nextDueDate: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0] },
+  { id: '1', date: '2023-10-20', animalId: 'Cow-012', event: 'Vaccination', notes: 'Bovine Viral Diarrhea vaccine', nextDueDate: '2024-10-20', livestockCategory: 'dairy' },
+  { id: '2', date: '2023-10-15', animalId: 'Cow-007', event: 'Deworming', notes: 'Oral drench administered', livestockCategory: 'dairy' },
+  { id: '3', date: '2023-10-10', animalId: 'Chicken-A12', event: 'Check-up', notes: 'Routine check, good condition', livestockCategory: 'poultry' },
+  { id: '4', date: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0], animalId: 'Calf-034', event: 'Treatment', notes: 'Follow-up for scours', nextDueDate: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0], livestockCategory: 'dairy' },
+  { id: '5', date: '2023-10-22', animalId: 'Pig-P28', event: 'Vaccination', notes: 'Swine flu vaccine', nextDueDate: '2024-04-22', livestockCategory: 'pigs' },
 ];
 
 export const mockHistory: HistoryRecord[] = [
-    { id: 'h1', date: new Date().toISOString(), type: 'Production', description: 'Milk Yield - Cow #402', details: 'Dairy Barn • Shift A', value: '24 L' },
-    { id: 'h2', date: new Date().toISOString(), type: 'Feeding', description: 'Feeding - Pig Pen 03', details: 'Grain Mix • Auto-feeder', value: '45 kg' },
-    { id: 'h3', date: new Date(Date.now() - 86400000).toISOString(), type: 'Health', description: 'Vaccination - Flock A', details: 'Dr. Smith • Poultry Unit', value: 'Done' },
-    { id: 'h4', date: new Date(Date.now() - 90000000).toISOString(), type: 'Health', description: 'Weight Check - Goat #22', details: 'Weekly Monitoring', value: '38 kg' },
-    { id: 'h5', date: new Date(Date.now() - 98000000).toISOString(), type: 'Health', description: 'New Born - Sheep #09', details: 'Maternity Pen 1', value: 'Healthy' },
-    { id: 'h6', date: new Date(Date.now() - 186400000).toISOString(), type: 'Financial', description: 'Feed Purchase', details: 'Bulk Grain Order', value: '$1,250' },
-    { id: 'h7', date: new Date(Date.now() - 186400000).toISOString(), type: 'Inventory', description: 'Added Corn Silage', details: '500kg to Silo 2', value: '+500 kg' },
+    { id: 'h1', date: new Date().toISOString(), type: 'Production', description: 'Milk Yield - Cow #402', details: 'Dairy Barn • Shift A', value: '24 L', livestockCategory: 'dairy' },
+    { id: 'h2', date: new Date().toISOString(), type: 'Feeding', description: 'Feeding - Pig Pen 03', details: 'Grain Mix • Auto-feeder', value: '45 kg', livestockCategory: 'pigs' },
+    { id: 'h3', date: new Date(Date.now() - 86400000).toISOString(), type: 'Health', description: 'Vaccination - Flock A', details: 'Dr. Smith • Poultry Unit', value: 'Done', livestockCategory: 'poultry' },
+    { id: 'h4', date: new Date(Date.now() - 90000000).toISOString(), type: 'Health', description: 'Weight Check - Goat #22', details: 'Weekly Monitoring', value: '38 kg', livestockCategory: 'goats-sheep' },
+    { id: 'h5', date: new Date(Date.now() - 98000000).toISOString(), type: 'Health', description: 'New Born - Sheep #09', details: 'Maternity Pen 1', value: 'Healthy', livestockCategory: 'goats-sheep' },
+    { id: 'h6', date: new Date(Date.now() - 186400000).toISOString(), type: 'Financial', description: 'Feed Purchase', details: 'Bulk Grain Order', value: '$1,250', livestockCategory: 'dairy' },
+    { id: 'h7', date: new Date(Date.now() - 186400000).toISOString(), type: 'Inventory', description: 'Added Corn Silage', details: '500kg to Silo 2', value: '+500 kg', livestockCategory: 'dairy' },
 
 ];

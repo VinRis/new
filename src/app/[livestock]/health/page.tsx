@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,15 +9,23 @@ import { Bell, Download, Edit, Filter, MoreVertical, Search, Trash } from "lucid
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useMemo } from "react";
+import type { LivestockCategory } from "@/lib/types";
 
-export default function HealthPage() {
-    const upcomingEvents = mockHealthRecords.filter(r => r.nextDueDate);
+export default function HealthPage({ params }: { params: { livestock: LivestockCategory } }) {
+    const healthRecords = useMemo(() => {
+        return mockHealthRecords.filter(r => r.livestockCategory === params.livestock);
+    }, [params.livestock]);
+
+    const upcomingEvents = useMemo(() => {
+        return healthRecords.filter(r => r.nextDueDate && new Date(r.nextDueDate) >= new Date());
+    }, [healthRecords]);
 
   return (
     <div className="container mx-auto p-4 sm:p-6">
       <div className="mb-8">
         <h1 className="text-2xl font-bold font-headline text-foreground">Health Management</h1>
-        <p className="text-muted-foreground">Log health events and track upcoming treatments.</p>
+        <p className="text-muted-foreground">Log health events and track upcoming treatments for your {params.livestock}.</p>
       </div>
 
       {upcomingEvents.length > 0 && (
@@ -64,7 +74,7 @@ export default function HealthPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockHealthRecords.map((record) => (
+              {healthRecords.map((record) => (
                 <TableRow key={record.id}>
                   <TableCell>{record.date}</TableCell>
                   <TableCell><Badge variant="secondary">{record.animalId}</Badge></TableCell>

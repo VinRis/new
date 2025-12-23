@@ -8,6 +8,7 @@ import { Download, Filter, Search, Droplets, Utensils, HeartPulse, DollarSign, P
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import type { LivestockCategory } from "@/lib/types";
 
 const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColor: string } } = {
   Production: { icon: Droplets, color: 'text-blue-400', bgColor: 'bg-blue-900/50' },
@@ -18,15 +19,20 @@ const iconMap: { [key: string]: { icon: React.ElementType, color: string, bgColo
 };
 
 
-export default function HistoryPage() {
+export default function HistoryPage({ params }: { params: { livestock: LivestockCategory } }) {
+
+    const history = useMemo(() => {
+        return mockHistory.filter(h => h.livestockCategory === params.livestock);
+    }, [params.livestock]);
+
   const groupedHistory = useMemo(() => {
-    const groups: { [key: string]: typeof mockHistory } = {
+    const groups: { [key: string]: typeof history } = {
       Today: [],
       Yesterday: [],
       'Older': [],
     };
 
-    mockHistory.forEach(record => {
+    history.forEach(record => {
       const recordDate = parseISO(record.date);
       if (isToday(recordDate)) {
         groups.Today.push(record);
@@ -45,7 +51,7 @@ export default function HistoryPage() {
             }
             acc[dateStr].push(record);
             return acc;
-        }, {} as { [key: string]: typeof mockHistory });
+        }, {} as { [key: string]: typeof history });
         
         // This is a simplified grouping for demonstration.
         // A full implementation would sort and format these dates.
@@ -55,13 +61,13 @@ export default function HistoryPage() {
      delete groups.Older;
     return groups;
 
-  }, []);
+  }, [history]);
 
   return (
     <div className="container mx-auto p-4 sm:p-6">
       <div className="mb-8">
         <h1 className="text-2xl font-bold font-headline text-foreground">Record History</h1>
-        <p className="text-muted-foreground">View all records saved for your farm.</p>
+        <p className="text-muted-foreground">View all records saved for your {params.livestock}.</p>
       </div>
 
        <div className="mb-6">
@@ -91,7 +97,7 @@ export default function HistoryPage() {
               <Card>
                 <CardContent className="p-0">
                   <div className="divide-y divide-border">
-                    {records.map((record, index) => {
+                    {records.map((record) => {
                       const IconConfig = iconMap[record.type as keyof typeof iconMap] || { icon: Utensils, color: 'text-gray-400', bgColor: 'bg-gray-800' };
                       const Icon = IconConfig.icon;
                       return (

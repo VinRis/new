@@ -16,6 +16,7 @@ export type Transaction = {
   category: 'Income' | 'Expense';
   item: string;
   amount: number;
+  livestockCategory: LivestockCategory | 'general';
 };
 
 export type HealthRecord = {
@@ -25,6 +26,7 @@ export type HealthRecord = {
   event: 'Vaccination' | 'Deworming' | 'Treatment' | 'Check-up';
   notes: string;
   nextDueDate?: string;
+  livestockCategory: LivestockCategory;
 };
 
 export type ProductionRecord = {
@@ -41,6 +43,7 @@ export type HistoryRecord = {
     description: string;
     details: string;
     value?: string;
+    livestockCategory: LivestockCategory;
 };
 
 export type MonthlyProduction = {

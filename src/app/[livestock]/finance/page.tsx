@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,9 +9,15 @@ import { cn } from "@/lib/utils";
 import { Download, Edit, Filter, MoreVertical, Search, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import type { LivestockCategory } from "@/lib/types";
+import { useMemo } from "react";
 
-export default function FinancePage() {
+export default function FinancePage({ params }: { params: { livestock: LivestockCategory } }) {
   const currency = '$'; // Placeholder
+  const transactions = useMemo(() => {
+    return mockTransactions.filter(tx => tx.livestockCategory === params.livestock || tx.livestockCategory === 'general');
+  }, [params.livestock]);
+
   return (
     <div className="container mx-auto p-4 sm:p-6">
       <div className="mb-8">
@@ -48,7 +56,7 @@ export default function FinancePage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockTransactions.map((tx) => (
+              {transactions.map((tx) => (
                 <TableRow key={tx.id}>
                   <TableCell>{tx.date}</TableCell>
                   <TableCell>

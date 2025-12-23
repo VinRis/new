@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CowIcon, ChickenIcon, PigIcon, GoatIcon } from '@/components/icons';
 import { placeholderImages } from '@/lib/placeholder-images';
+import { FileText, Trophy } from 'lucide-react';
 
 type Livestock = {
   name: string;
@@ -32,7 +33,7 @@ export default function WelcomePage() {
           </p>
         </div>
 
-        <div className="w-full max-w-4xl">
+        <div className="w-full max-w-5xl">
           <h2 className="text-xl font-semibold text-center mb-6 font-headline">Select a livestock category to begin</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {livestockTypes.map((livestock) => (
@@ -58,6 +59,32 @@ export default function WelcomePage() {
               </Link>
             ))}
           </div>
+            
+          <Card className="mt-8 bg-card/50 backdrop-blur-sm border-white/10">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="font-headline">Master Report</CardTitle>
+                <p className="text-muted-foreground text-sm">A complete overview of your entire farm.</p>
+              </div>
+               <Button>
+                <FileText className="mr-2 h-4 w-4" />
+                Generate Master Report
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="border-t border-border pt-4 mt-4">
+                  <div className="flex items-center gap-4 text-amber-400">
+                    <Trophy className="h-8 w-8" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Top Performer</p>
+                      <h4 className="font-bold text-lg">Poultry</h4>
+                      <p className="text-sm">Highest revenue generation this quarter.</p>
+                    </div>
+                  </div>
+              </div>
+            </CardContent>
+          </Card>
+
         </div>
       </main>
 
