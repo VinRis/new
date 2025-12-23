@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -20,43 +21,53 @@ export const FarmProvider = ({ children }: { children: ReactNode }) => {
     const [managerName, setManagerNameState] = useState('John');
     const [farmLocation, setFarmLocationState] = useState('Vermont, USA');
     const [currency, setCurrencyState] = useState<'usd' | 'eur' | 'gbp' | 'kes'>('usd');
-    const [isClient, setIsClient] = useState(false);
+    
+    // isMounted check ensures localStorage is only accessed on the client after mounting.
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsClient(true);
-        const storedFarmName = localStorage.getItem('farmName');
-        if (storedFarmName) setFarmNameState(storedFarmName);
-
-        const storedManagerName = localStorage.getItem('managerName');
-        if (storedManagerName) setManagerNameState(storedManagerName);
-        
-        const storedFarmLocation = localStorage.getItem('farmLocation');
-        if (storedFarmLocation) setFarmLocationState(storedFarmLocation);
-
-        const storedCurrency = localStorage.getItem('currency');
-        if (storedCurrency) setCurrencyState(storedCurrency as 'usd' | 'eur' | 'gbp' | 'kes');
-
+        setIsMounted(true);
     }, []);
+
+    useEffect(() => {
+        if (isMounted) {
+            const storedFarmName = localStorage.getItem('farmName');
+            if (storedFarmName) setFarmNameState(storedFarmName);
+
+            const storedManagerName = localStorage.getItem('managerName');
+            if (storedManagerName) setManagerNameState(storedManagerName);
+            
+            const storedFarmLocation = localStorage.getItem('farmLocation');
+            if (storedFarmLocation) setFarmLocationState(storedFarmLocation);
+
+            const storedCurrency = localStorage.getItem('currency');
+            if (storedCurrency) setCurrencyState(storedCurrency as 'usd' | 'eur' | 'gbp' | 'kes');
+        }
+    }, [isMounted]);
 
     const setFarmName = (name: string) => {
         setFarmNameState(name);
-        if (isClient) localStorage.setItem('farmName', name);
+        if (isMounted) localStorage.setItem('farmName', name);
     };
 
     const setManagerName = (name: string) => {
         setManagerNameState(name);
-        if (isClient) localStorage.setItem('managerName', name);
+        if (isMounted) localStorage.setItem('managerName', name);
     };
 
     const setFarmLocation = (location: string) => {
         setFarmLocationState(location);
-        if (isClient) localStorage.setItem('farmLocation', location);
+        if (isMounted) localStorage.setItem('farmLocation', location);
     };
     
     const setCurrency = (currency: 'usd' | 'eur' | 'gbp' | 'kes') => {
         setCurrencyState(currency);
-        if(isClient) localStorage.setItem('currency', currency);
+        if(isMounted) localStorage.setItem('currency', currency);
     };
+    
+    if (!isMounted) {
+        return null; // Or return a loading skeleton
+    }
 
     return (
         <FarmContext.Provider value={{ farmName, setFarmName, managerName, setManagerName, farmLocation, setFarmLocation, currency, setCurrency }}>
